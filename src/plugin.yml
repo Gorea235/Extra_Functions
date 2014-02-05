@@ -1,0 +1,30 @@
+name: Extra_Functions
+main: gorea235.plugin.extra_functions.Extra_Functions_Main
+version: 0.1
+commands:
+    team:
+        description: This is just a wrapper around the 'scoreboard teams' command, allowing permissions.
+permissions:
+    extra_functions.team.*:
+        description: Gives access to all Extra_Functions Team commands
+        children:
+            extra_functions.join: true
+            extra_functions.leave: true
+            extra_functions.create: true
+            extra_functions.delete: true
+            extra_functions.options: true
+    extra_functions.team.join:
+        description: Allows you to join a scoreboard team
+        default: true
+    extra_functions.team.leave:
+        description: Allows you to leave a scoreboard team
+        default: true
+    extra_functions.team.create:
+        description: Allows you to create a scoreboard team
+        default: op
+    extra_functions.team.delete:
+        description: Allows you to delete a scoreboard team
+        default: op
+    extra_functions.team.options:
+        description: Allows you to modify the options of a scoreboard team
+        default: op

@@ -1,0 +1,9 @@
+# This is the default config, edit as you wish
+# This is the time in seconds between each save (default is every hour)
+savetime: 3600
+
+# This is the time in seconds between auto-restarting the server (default -1, which means never)
+restarttime: -1
+
+# This is the time in seconds before the restart the plugin will tell the players is will restart (default -1, which means never)
+telltime: -1

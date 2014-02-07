@@ -23,21 +23,21 @@ public final class Extra_Functions_Main extends JavaPlugin {
 	public void loadConfig() {
 		this.saveDefaultConfig();
 		saveTime = this.getConfig().getInt("savetime");
-		if (saveTime < -1) {
+		if (saveTime < 1) {
 			this.getConfig().set("savetime", -1);
 			saveTime = -1;
 		} else if (saveTime != -1) {
 			saveTime = saveTime * 20;
 		}
 		restartTime = this.getConfig().getInt("restarttime");
-		if (restartTime < -1) {
+		if (restartTime < 1) {
 			this.getConfig().set("restarttime", -1);
 			restartTime = -1;
 		} else if (restartTime != -1) {
 			restartTime = restartTime * 20;
 		}
 		tellTime = this.getConfig().getInt("telltime");
-		if (tellTime < -1) {
+		if (tellTime < 1) {
 			this.getConfig().set("telltime", -1);
 			tellTime = -1;
 		} else if (tellTime != -1) {
@@ -60,10 +60,41 @@ public final class Extra_Functions_Main extends JavaPlugin {
 	public void dispatchCommand(String cmd) {
 		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), cmd);
 	}
-	
+
 	public String toTime(int ticks) {
-		
-		return null;
+		int seconds = ticks / 20;
+		if (seconds < 60) {
+			if (seconds > 1) {
+				return Math.round(seconds) + " seconds";
+			} else {
+				return Math.round(seconds) + " second";
+			}
+		} else {
+			float minutes = seconds / 60;
+			if (minutes < 60) {
+				if (minutes > 1) {
+					if (Math.round(minutes) != minutes) {
+						return "approximately " + Math.round(minutes)
+								+ " minutes";
+					} else {
+						return Math.round(minutes) + " minutes";
+					}
+				} else {
+					return Math.round(minutes) + " minute";
+				}
+			} else {
+				float hours = minutes / 60;
+				if (hours > 1) {
+					if (Math.round(hours) != hours) {
+						return "approximately " + Math.round(hours) + " hours";
+					} else {
+						return Math.round(hours) + " hours";
+					}
+				} else {
+					return Math.round(hours) + " hour";
+				}
+			}
+		}
 	}
 
 	public void onEnable() {
@@ -72,9 +103,7 @@ public final class Extra_Functions_Main extends JavaPlugin {
 		loadConfig();
 		final BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
 		if (saveTime != -1) {
-			Log("Scheduling save task for every " + saveTime / 20
-					+ " seconds (approximately every "
-					+ Math.round((saveTime / 20) / 60) + " minutes)");
+			Log("Scheduling save task every " + toTime(saveTime));
 			scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
 
 				@Override
@@ -90,32 +119,26 @@ public final class Extra_Functions_Main extends JavaPlugin {
 			}, 20L, saveTime);
 		}
 		if (restartSchedule != -1) {
-			Log("Scheduling restart for every " + restartTime / 20
-					+ " seconds (approximately every "
-					+ Math.round((restartTime / 20) / 60) + " minutes)");
-			scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
+			Log("Scheduling restart in " + toTime(restartTime));
+			scheduler.scheduleSyncDelayedTask(this, new Runnable() {
 
 				@Override
 				public void run() {
+					scheduler.scheduleSyncDelayedTask(plugin, new Runnable() {
+
+						@Override
+						public void run() {
+							dispatchCommand("restart");
+						}
+
+					}, tellTime);
 					if (tellTime != -1) {
-						scheduler.scheduleSyncDelayedTask(plugin,
-								new Runnable() {
-
-									@Override
-									public void run() {
-										dispatchCommand("restart");
-									}
-
-								}, tellTime);
-						broadcastMessage("Restarting the server in roughly "
-								+ Math.round((tellTime / 20) / 60)
-								+ " minutes.");
-					} else {
-						dispatchCommand("restart");
+						broadcastMessage("Restarting the server in "
+								+ toTime(tellTime) + ".");
 					}
 				}
 
-			}, restartSchedule, restartSchedule);
+			}, restartSchedule);
 		}
 	}
 }

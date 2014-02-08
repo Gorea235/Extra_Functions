@@ -1,6 +1,6 @@
 name: Extra_Functions
 main: gorea235.plugin.extra_functions.Extra_Functions_Main
-version: 0.1
+version: 0.2
 commands:
     team:
         description: This is just a wrapper around the 'scoreboard teams' command, allowing permissions.

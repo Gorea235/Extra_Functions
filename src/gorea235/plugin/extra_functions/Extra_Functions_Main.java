@@ -1,9 +1,16 @@
 package gorea235.plugin.extra_functions;
 
+import java.util.logging.Logger;
+
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.event.Listener;
 
 public final class Extra_Functions_Main extends JavaPlugin {
 	public int saveTime;
@@ -16,8 +23,8 @@ public final class Extra_Functions_Main extends JavaPlugin {
 		Bukkit.broadcastMessage("[Extra_Functions] " + msg);
 	}
 
-	public void Log(String toLog) {
-		getLogger().info(toLog);
+	public static void Log(String toLog) {
+		Bukkit.getLogger().info(toLog);
 	}
 
 	public void loadConfig() {
@@ -140,5 +147,7 @@ public final class Extra_Functions_Main extends JavaPlugin {
 
 			}, restartSchedule);
 		}
+		getServer().getPluginManager().registerEvents(
+				new Extra_FunctionsInventoryKeeper(), this);
 	}
 }

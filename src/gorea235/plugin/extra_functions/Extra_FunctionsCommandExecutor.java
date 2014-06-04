@@ -5,7 +5,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class Extra_FunctionsCommandExecutor implements CommandExecutor {
 
@@ -127,7 +126,7 @@ public class Extra_FunctionsCommandExecutor implements CommandExecutor {
 			// commandError(sender, "/team <join/leave/create/option/delete>");
 			// }
 		} else {
-			plugin.Log("Error! Sender must be a player! Console executability will be added soon.");
+			Extra_Functions_Main.Log("Error! Sender must be a player! Console executability will be added soon.");
 			return true;
 		}
 		return false;
